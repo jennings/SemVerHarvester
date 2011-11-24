@@ -27,13 +27,13 @@ namespace SemVerParser
             var psi = new ProcessStartInfo()
             {
                 FileName = gitPath,
-                Arguments = @"describe --always --long --dirty=-modified --match v[0-9]*\.[0-9]*\.[0-9]*[a-zA-Z]?[a-zA-Z0-9-]*",
+                Arguments = @"describe --always --long --dirty=-modified --match v[0-9]*",
                 UseShellExecute = false,
                 RedirectStandardOutput = true
             };
 
             var process = Process.Start(psi);
-            if (process.WaitForExit(10000))
+            if (!process.WaitForExit(10000))
             {
                 throw new Exception("Git-describe did not return within 10 seconds.");
             }

@@ -95,6 +95,8 @@ namespace SemVerParser
                 return false;
             }
 
+            this.Log.LogMessage("Git executable path: " + this.GitPath);
+            this.Log.LogMessage("Git working path: " + System.Environment.CurrentDirectory);
             string gitDescribe;
 
             try
@@ -106,6 +108,8 @@ namespace SemVerParser
                 this.Log.LogErrorFromException(ex);
                 return false;
             }
+
+            this.Log.LogMessage("Git describe result: " + gitDescribe);
 
             this.SetPropertiesFromGitDescribe(gitDescribe);
 
