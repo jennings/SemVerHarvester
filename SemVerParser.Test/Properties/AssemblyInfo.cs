@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("SemVerParser.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The testing library for SemVerParser.")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("1946f22f-26f6-4aa1-b99d-0d4300898373")]

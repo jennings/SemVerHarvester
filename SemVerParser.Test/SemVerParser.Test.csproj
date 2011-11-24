@@ -70,21 +70,16 @@
     <Compile Include="SemVerGitParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SemVerParser\SemVerParser.csproj">
+    <ProjectReference Include="..\SemVerParser\SemVerParser.Net40.csproj">
       <Project>{AE222838-13A6-46A8-A411-3F848617432C}</Project>
       <Name>SemVerParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\packages\StyleCop\Microsoft.StyleCop.Targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("SemVerParser")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("SemVerParser is a MSBuild task library that harvests version numbers from tags in source control repositories.")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("62c70fbc-ce59-457f-88d3-aea26baf0ac1")]
