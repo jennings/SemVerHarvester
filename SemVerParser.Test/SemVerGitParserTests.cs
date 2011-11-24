@@ -19,6 +19,8 @@ namespace SemVerParser.Test
     /// </summary>
     public class SemVerGitParserTests
     {
+        private const string GitPath = @"C:\Program Files\Git\bin\git.exe";
+
         /// <summary>
         ///     Confirms that Execute fails if GitPath is not set.
         /// </summary>
@@ -47,10 +49,100 @@ namespace SemVerParser.Test
 
             var parser = new SemVerGitParser(runner);
             parser.BuildEngine = this.CreateMockBuildEngine();
-            parser.GitPath = @"C:\Program Files\Git\bin\git.exe";
+            parser.GitPath = SemVerGitParserTests.GitPath;
             var returnValue = parser.Execute();
 
             Assert.AreEqual(false, returnValue);
+        }
+
+        /// <summary>
+        ///     Verifies that the version number is set to 0.0.0.1 when no
+        ///     tags are in the source repository (that is, git-describe returns
+        ///     just a commit sha1).
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_to_0_0_0_1_when_no_tag_is_found()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("1a2b3c4", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("0", parser.MajorVersion);
+            Assert.AreEqual("0", parser.MinorVersion);
+            Assert.AreEqual("0", parser.PatchVersion);
+            Assert.AreEqual("1", parser.RevisionVersion);
+        }
+
+        /// <summary>
+        ///     Verifies a clean checkout of a version supplies the correct
+        ///     version numbers.
+        ///     Revision number is 0 when a specific version is checked out.
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_on_clean_tag_checkout_1()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("v1.2.3", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("1", parser.MajorVersion);
+            Assert.AreEqual("2", parser.MinorVersion);
+            Assert.AreEqual("3", parser.PatchVersion);
+            Assert.AreEqual("0", parser.RevisionVersion);
+        }
+
+        /// <summary>
+        ///     Verifies a clean checkout of a version supplies the correct
+        ///     version numbers, even with two-digit version components.
+        ///     Revision number is 0 when a specific version is checked out.
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_on_clean_tag_checkout_2()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("v10.20.30", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("10", parser.MajorVersion);
+            Assert.AreEqual("20", parser.MinorVersion);
+            Assert.AreEqual("30", parser.PatchVersion);
+            Assert.AreEqual("0", parser.RevisionVersion);
+        }
+
+        /// <summary>
+        ///     Verifies a clean checkout of a version supplies the correct
+        ///     version numbers, even if the tag has leading zeroes.
+        ///     Revision number is 0 when a specific version is checked out.
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_on_clean_tag_checkout_3()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("v01.02.03", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("1", parser.MajorVersion);
+            Assert.AreEqual("2", parser.MinorVersion);
+            Assert.AreEqual("3", parser.PatchVersion);
+            Assert.AreEqual("0", parser.RevisionVersion);
+        }
+
+        /// <summary>
+        ///     Verifies a clean checkout of a version supplies the correct
+        ///     version numbers, even if the patch component is zero.
+        ///     Revision number is 0 when a specific version is checked out.
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_on_clean_tag_checkout_4()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("v2.1.0", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("2", parser.MajorVersion);
+            Assert.AreEqual("1", parser.MinorVersion);
+            Assert.AreEqual("0", parser.PatchVersion);
+            Assert.AreEqual("0", parser.RevisionVersion);
         }
 
         private GitDescribeRunner CreateMockDescribeRunner(string runReturnValue)
@@ -64,6 +156,16 @@ namespace SemVerParser.Test
         {
             var mockEngine = new Mock<IBuildEngine>();
             return mockEngine.Object;
+        }
+
+        private bool StandardExecute(string gitDescribeReturnValue, out SemVerGitParser parser)
+        {
+            var runner = this.CreateMockDescribeRunner(gitDescribeReturnValue);
+
+            parser = new SemVerGitParser(runner);
+            parser.BuildEngine = this.CreateMockBuildEngine();
+            parser.GitPath = SemVerGitParserTests.GitPath;
+            return parser.Execute();
         }
     }
 }

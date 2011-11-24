@@ -92,7 +92,13 @@ namespace SemVerParser
                 return false;
             }
 
+            this.SetPropertiesFromGitDescribe(gitDescribe);
+
             return true;
+        }
+
+        private void SetPropertiesFromGitDescribe(string gitDescribeResult)
+        {
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SemVerParser
             var psi = new ProcessStartInfo()
             {
                 FileName = gitPath,
-                Arguments = "describe --always --long --dirty=-modified",
+                Arguments = @"describe --always --long --dirty=-modified --match v[0-9]*\.[0-9]*\.[0-9]*[a-zA-Z]?[a-zA-Z0-9-]*",
                 UseShellExecute = false,
                 RedirectStandardOutput = true
             };
