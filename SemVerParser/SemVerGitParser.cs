@@ -69,6 +69,13 @@ namespace SemVerParser
         public string RevisionVersion { get; private set; }
 
         /// <summary>
+        ///     Gets a string that is empty on clean checkout, or " (Modified)" on
+        ///     a dirty checkout.
+        /// </summary>
+        [Output]
+        public string ModifiedString { get; private set; }
+
+        /// <summary>
         ///     Executes the task.
         /// </summary>
         /// <returns>True on success.</returns>
