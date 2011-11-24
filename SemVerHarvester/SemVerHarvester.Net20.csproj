@@ -51,4 +51,20 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\packages\StyleCop\Microsoft.StyleCop.Targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.1\msbuild\SemVerHarvester.Targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\packages\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+  <Target Name="BeforeBuild">
+    <SemVerGitHarvester GitPath="C:\Program Files (x86)\Git\bin\git.exe">
+      <Output TaskParameter="MajorVersion" PropertyName="MajorVersion" />
+      <Output TaskParameter="MinorVersion" PropertyName="MinorVersion" />
+      <Output TaskParameter="PatchVersion" PropertyName="PatchVersion" />
+      <Output TaskParameter="RevisionVersion" PropertyName="RevisionVersion" />
+      <Output TaskParameter="ModifiedString" PropertyName="ModifiedString" />
+    </SemVerGitHarvester>
+    <AssemblyInfo OutputFile="Properties\VersionAssemblyInfo.cs"
+                  CodeLanguage="CS"
+                  AssemblyVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)"
+                  AssemblyFileVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)"
+                  AssemblyInformationalVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)$(ModifiedString)" />
+  </Target>
 </Project>
