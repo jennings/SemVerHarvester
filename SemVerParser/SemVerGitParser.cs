@@ -10,6 +10,7 @@ namespace SemVerParser
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
@@ -19,6 +20,7 @@ namespace SemVerParser
     public class SemVerGitParser : Task
     {
         private GitDescribeRunner gitDescribeRunner;
+        private bool dirty;
 
         /// <summary>
         ///     Initializes a new instance of the SemVerGitParser class.
@@ -73,7 +75,13 @@ namespace SemVerParser
         ///     a dirty checkout.
         /// </summary>
         [Output]
-        public string ModifiedString { get; private set; }
+        public string ModifiedString
+        {
+            get
+            {
+                return this.dirty ? " (Modified)" : String.Empty;
+            }
+        }
 
         /// <summary>
         ///     Executes the task.
@@ -106,6 +114,44 @@ namespace SemVerParser
 
         private void SetPropertiesFromGitDescribe(string gitDescribeResult)
         {
+            var emptyCleanRx = new Regex(@"^[0-9a-f]{5,32}$");
+            var emptyDirtyRx = new Regex(@"^[0-9a-f]{5,32}-modified$");
+            var cleanRx = new Regex(@"^v([0-9]+)\.([0-9]+)\.([0-9]+)-([0-9]+)-g([0-9a-f]+)$");
+            var dirtyRx = new Regex(@"^v([0-9]+)\.([0-9]+)\.([0-9]+)-([0-9]+)-g([0-9a-f]+)-modified$");
+
+            if (emptyCleanRx.IsMatch(gitDescribeResult))
+            {
+                var match = emptyCleanRx.Match(gitDescribeResult);
+                this.MajorVersion = "0";
+                this.MinorVersion = "0";
+                this.PatchVersion = "0";
+                this.RevisionVersion = "1";
+                this.dirty = false;
+            }
+            else if (emptyDirtyRx.IsMatch(gitDescribeResult))
+            {
+                var match = emptyCleanRx.Match(gitDescribeResult);
+                this.MajorVersion = "0";
+                this.MinorVersion = "0";
+                this.PatchVersion = "0";
+                this.RevisionVersion = "1";
+                this.dirty = true;
+            }
+            else if (cleanRx.IsMatch(gitDescribeResult))
+            {
+                // this.MajorVersion = Convert.ToInt32(match.Captures[0].Value).ToString();
+            }
+            else if (dirtyRx.IsMatch(gitDescribeResult))
+            {
+            }
+            else
+            {
+                this.MajorVersion = "0";
+                this.MinorVersion = "0";
+                this.PatchVersion = "0";
+                this.RevisionVersion = "1";
+                this.dirty = true;
+            }
         }
     }
 }

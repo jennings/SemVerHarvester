@@ -59,7 +59,7 @@ namespace SemVerParser.Test
 
         #endregion
 
-        #region Clean, non-tagged tests
+        #region Empty version tests
 
         /// <summary>
         ///     Verifies that the version number is set to 0.0.0.1 when no
@@ -78,6 +78,25 @@ namespace SemVerParser.Test
             Assert.AreEqual("0", parser.PatchVersion);
             Assert.AreEqual("1", parser.RevisionVersion);
             Assert.AreEqual(String.Empty, parser.ModifiedString);
+        }
+
+        /// <summary>
+        ///     Verifies that the version number is set to 0.0.0.1 when no
+        ///     tags are in the source repository (that is, git-describe returns
+        ///     just a commit sha1) and the working directory is dirty.
+        /// </summary>
+        [Test]
+        public void Execute_sets_version_to_0_0_0_1_when_no_tag_is_found_and_dirty_checkout()
+        {
+            SemVerGitParser parser;
+            var returnValue = this.StandardExecute("1a2b3c4-modified", out parser);
+
+            Assert.AreEqual(true, returnValue);
+            Assert.AreEqual("0", parser.MajorVersion);
+            Assert.AreEqual("0", parser.MinorVersion);
+            Assert.AreEqual("0", parser.PatchVersion);
+            Assert.AreEqual("1", parser.RevisionVersion);
+            Assert.AreEqual(" (Modified)", parser.ModifiedString);
         }
 
         #endregion
