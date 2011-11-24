@@ -5,6 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser", "SemVerParse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser.Test", "SemVerParser.Test\SemVerParser.Test.csproj", "{F364D759-CFCC-47EA-8418-1F7521A6111C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28A3A56-DBF1-43E3-BCE6-EBB236CE3811}"
+	ProjectSection(SolutionItems) = preProject
+		NOTICE.md = NOTICE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
