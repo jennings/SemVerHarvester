@@ -33,9 +33,9 @@ namespace SemVerParser
             };
 
             var process = Process.Start(psi);
-            if (process.WaitForExit(20000))
+            if (process.WaitForExit(10000))
             {
-                throw new Exception("Git-describe did not return within 20 seconds.");
+                throw new Exception("Git-describe did not return within 10 seconds.");
             }
 
             var stdout = process.StandardOutput.ReadToEnd();

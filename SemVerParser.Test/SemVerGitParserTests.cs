@@ -10,9 +10,9 @@ namespace SemVerParser.Test
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Microsoft.Build.Framework;
     using Moq;
     using NUnit.Framework;
-    using Microsoft.Build.Framework;
 
     /// <summary>
     ///     Tests the SemVerGetParser class.
@@ -29,6 +29,25 @@ namespace SemVerParser.Test
 
             var parser = new SemVerGitParser(runner);
             parser.BuildEngine = this.CreateMockBuildEngine();
+            var returnValue = parser.Execute();
+
+            Assert.AreEqual(false, returnValue);
+        }
+
+        /// <summary>
+        ///     Verifies that if git-describe fails for whatever reason (defined by the Run
+        ///     method throwing an exception), then false is returned.
+        /// </summary>
+        [Test]
+        public void Execute_returns_false_if_git_describe_fails()
+        {
+            var mockRunner = new Mock<GitDescribeRunner>();
+            mockRunner.Setup(r => r.Run(It.IsAny<string>())).Throws<Exception>();
+            var runner = mockRunner.Object;
+
+            var parser = new SemVerGitParser(runner);
+            parser.BuildEngine = this.CreateMockBuildEngine();
+            parser.GitPath = @"C:\Program Files\Git\bin\git.exe";
             var returnValue = parser.Execute();
 
             Assert.AreEqual(false, returnValue);

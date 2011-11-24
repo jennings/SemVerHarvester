@@ -80,6 +80,18 @@ namespace SemVerParser
                 return false;
             }
 
+            string gitDescribe;
+
+            try
+            {
+                gitDescribe = this.gitDescribeRunner.Run(this.GitPath);
+            }
+            catch (Exception ex)
+            {
+                this.Log.LogErrorFromException(ex);
+                return false;
+            }
+
             return true;
         }
     }
