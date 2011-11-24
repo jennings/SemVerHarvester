@@ -148,6 +148,12 @@ namespace SemVerParser
             }
             else if (dirtyRx.IsMatch(gitDescribeResult))
             {
+                var match = dirtyRx.Match(gitDescribeResult);
+                this.MajorVersion = Convert.ToInt32(match.Groups[1].Value).ToString();
+                this.MinorVersion = Convert.ToInt32(match.Groups[2].Value).ToString();
+                this.PatchVersion = Convert.ToInt32(match.Groups[3].Value).ToString();
+                this.RevisionVersion = Convert.ToInt32(match.Groups[4].Value).ToString();
+                this.dirty = true;
             }
             else
             {
