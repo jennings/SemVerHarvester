@@ -129,7 +129,7 @@ namespace SemVerParser
                 this.MajorVersion = "0";
                 this.MinorVersion = "0";
                 this.PatchVersion = "0";
-                this.RevisionVersion = "1";
+                this.RevisionVersion = "0";
                 this.dirty = false;
             }
             else if (emptyDirtyRx.IsMatch(gitDescribeResult))
@@ -138,7 +138,7 @@ namespace SemVerParser
                 this.MajorVersion = "0";
                 this.MinorVersion = "0";
                 this.PatchVersion = "0";
-                this.RevisionVersion = "1";
+                this.RevisionVersion = "0";
                 this.dirty = true;
             }
             else if (cleanRx.IsMatch(gitDescribeResult))
