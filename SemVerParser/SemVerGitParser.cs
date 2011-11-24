@@ -18,6 +18,32 @@ namespace SemVerParser
     /// </summary>
     public class SemVerGitParser : Task
     {
+        private GitDescribeRunner gitDescribeRunner;
+
+        /// <summary>
+        ///     Initializes a new instance of the SemVerGitParser class.
+        /// </summary>
+        public SemVerGitParser()
+            : this(new GitDescribeRunner())
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the SemVerGitParser class with the given
+        ///     GitDescribeRunner, used for unit testing.
+        /// </summary>
+        /// <param name="gitDescribeRunner">The GitDescribeRunner to use.</param>
+        public SemVerGitParser(GitDescribeRunner gitDescribeRunner)
+        {
+            this.gitDescribeRunner = gitDescribeRunner;
+        }
+
+        /// <summary>
+        ///     Gets or sets the path to the Git executable.
+        /// </summary>
+        [Required]
+        public string GitPath { get; set; }
+
         /// <summary>
         ///     Gets the major version number (X.0.0.0).
         /// </summary>
@@ -48,7 +74,13 @@ namespace SemVerParser
         /// <returns>True on success.</returns>
         public override bool Execute()
         {
-            throw new NotImplementedException();
+            if (this.GitPath == null)
+            {
+                this.Log.LogError("GitPath must be set to use SemVerGitParser.");
+                return false;
+            }
+
+            return true;
         }
     }
 }
