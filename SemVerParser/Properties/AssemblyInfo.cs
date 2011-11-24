@@ -1,0 +1,15 @@
+﻿//------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Stephen Jennings">
+//   Copyright 2011 Stephen Jennings. Licensed under the Apache License, Version 2.0.
+// </copyright>
+//------------------------------------------------------------------------------------
+
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+[assembly: AssemblyTitle("SemVerParser")]
+[assembly: AssemblyDescription("")]
+
+[assembly: ComVisible(false)]
+[assembly: Guid("62c70fbc-ce59-457f-88d3-aea26baf0ac1")]

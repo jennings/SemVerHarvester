@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser", "SemVerParser\SemVerParser.csproj", "{AE222838-13A6-46A8-A411-3F848617432C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser.Test", "SemVerParser.Test\SemVerParser.Test.csproj", "{F364D759-CFCC-47EA-8418-1F7521A6111C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE222838-13A6-46A8-A411-3F848617432C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE222838-13A6-46A8-A411-3F848617432C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE222838-13A6-46A8-A411-3F848617432C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE222838-13A6-46A8-A411-3F848617432C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F364D759-CFCC-47EA-8418-1F7521A6111C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F364D759-CFCC-47EA-8418-1F7521A6111C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F364D759-CFCC-47EA-8418-1F7521A6111C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F364D759-CFCC-47EA-8418-1F7521A6111C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
