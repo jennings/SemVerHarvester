@@ -9,42 +9,43 @@ namespace SemVerHarvester
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using Microsoft.Build.Utilities;
     using Microsoft.Build.Framework;
+    using Microsoft.Build.Utilities;
 
+    /// <summary>
+    ///     Base class for all harvesters.
+    /// </summary>
     public abstract class Harvester : Task
     {
-        private bool dirty;
-
         /// <summary>
-        ///     Gets the major version number (X.0.0.0).
+        ///     Gets or sets the major version number (X.0.0.0).
         /// </summary>
         [Output]
-        public string MajorVersion { get; private set; }
+        public string MajorVersion { get; protected set; }
 
         /// <summary>
-        ///     Gets the minor version number (0.Y.0.0).
+        ///     Gets or sets the minor version number (0.Y.0.0).
         /// </summary>
         [Output]
-        public string MinorVersion { get; private set; }
+        public string MinorVersion { get; protected set; }
 
         /// <summary>
-        ///     Gets the patch version number (0.0.Z.0).
+        ///     Gets or sets the patch version number (0.0.Z.0).
         /// </summary>
         [Output]
-        public string PatchVersion { get; private set; }
+        public string PatchVersion { get; protected set; }
 
         /// <summary>
-        ///     Gets the revision version number (0.0.0.W).
+        ///     Gets or sets the revision version number (0.0.0.W).
         /// </summary>
         [Output]
-        public string RevisionVersion { get; private set; }
+        public string RevisionVersion { get; protected set; }
 
         /// <summary>
-        ///     Gets the unique commit ID from the repository (e.g., a7cd1c4).
+        ///     Gets or sets the unique commit ID from the repository (e.g., a7cd1c4).
         /// </summary>
         [Output]
-        public string CommitId { get; private set; }
+        public string CommitId { get; protected set; }
 
         /// <summary>
         ///     Gets a string that is empty on clean checkout, or " (Modified)" on
@@ -55,9 +56,14 @@ namespace SemVerHarvester
         {
             get
             {
-                return this.dirty ? " (Modified)" : String.Empty;
+                return this.Modified ? " (Modified)" : String.Empty;
             }
         }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether the current checkout
+        ///     has been modified.
+        /// </summary>
+        public bool Modified { get; protected set; }
     }
 }
