@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		NOTICE.md = NOTICE.md
 		README.md = README.md
+		SemVerHarvester.nuspec = SemVerHarvester.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerHarvester.Net20", "SemVerHarvester\SemVerHarvester.Net20.csproj", "{9345CE5F-FEE3-4195-88DB-2DCA21428986}"

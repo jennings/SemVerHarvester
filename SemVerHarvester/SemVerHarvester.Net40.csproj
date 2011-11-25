@@ -92,7 +92,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\packages\StyleCop\Microsoft.StyleCop.Targets" />
-  <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.1\msbuild\SemVerHarvester.Targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.2\msbuild\SemVerHarvester.Targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\packages\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
   <Target Name="BeforeBuild">
     <SemVerGitHarvester GitPath="C:\Program Files (x86)\Git\bin\git.exe">
