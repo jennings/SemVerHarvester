@@ -70,6 +70,12 @@ namespace SemVerHarvester
         public string RevisionVersion { get; private set; }
 
         /// <summary>
+        ///     Gets the unique commit ID from the repository (e.g., a7cd1c4).
+        /// </summary>
+        [Output]
+        public string CommitId { get; private set; }
+
+        /// <summary>
         ///     Gets a string that is empty on clean checkout, or " (Modified)" on
         ///     a dirty checkout.
         /// </summary>
@@ -117,8 +123,8 @@ namespace SemVerHarvester
 
         private void SetPropertiesFromGitDescribe(string gitDescribeResult)
         {
-            var emptyCleanRx = new Regex(@"^[0-9a-f]{5,32}$");
-            var emptyDirtyRx = new Regex(@"^[0-9a-f]{5,32}-modified$");
+            var emptyCleanRx = new Regex(@"^([0-9a-f]{5,32})$");
+            var emptyDirtyRx = new Regex(@"^([0-9a-f]{5,32})-modified$");
             var cleanRx = new Regex(@"^v([0-9]+)\.([0-9]+)\.([0-9]+)-([0-9]+)-g([0-9a-f]+)$");
             var dirtyRx = new Regex(@"^v([0-9]+)\.([0-9]+)\.([0-9]+)-([0-9]+)-g([0-9a-f]+)-modified$");
 
@@ -130,15 +136,17 @@ namespace SemVerHarvester
                 this.PatchVersion = "0";
                 this.RevisionVersion = "0";
                 this.dirty = false;
+                this.CommitId = match.Groups[1].Value.ToString();
             }
             else if (emptyDirtyRx.IsMatch(gitDescribeResult))
             {
-                var match = emptyCleanRx.Match(gitDescribeResult);
+                var match = emptyDirtyRx.Match(gitDescribeResult);
                 this.MajorVersion = "0";
                 this.MinorVersion = "0";
                 this.PatchVersion = "0";
                 this.RevisionVersion = "0";
                 this.dirty = true;
+                this.CommitId = match.Groups[1].Value.ToString();
             }
             else if (cleanRx.IsMatch(gitDescribeResult))
             {
@@ -148,6 +156,7 @@ namespace SemVerHarvester
                 this.PatchVersion = Convert.ToInt32(match.Groups[3].Value).ToString();
                 this.RevisionVersion = Convert.ToInt32(match.Groups[4].Value).ToString();
                 this.dirty = false;
+                this.CommitId = match.Groups[5].Value.ToString();
             }
             else if (dirtyRx.IsMatch(gitDescribeResult))
             {
@@ -157,6 +166,7 @@ namespace SemVerHarvester
                 this.PatchVersion = Convert.ToInt32(match.Groups[3].Value).ToString();
                 this.RevisionVersion = Convert.ToInt32(match.Groups[4].Value).ToString();
                 this.dirty = true;
+                this.CommitId = match.Groups[5].Value.ToString();
             }
             else
             {
@@ -165,6 +175,7 @@ namespace SemVerHarvester
                 this.PatchVersion = "0";
                 this.RevisionVersion = "1";
                 this.dirty = true;
+                this.CommitId = String.Empty;
             }
         }
     }

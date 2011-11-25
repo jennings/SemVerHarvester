@@ -78,6 +78,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -97,6 +98,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         #endregion
@@ -120,6 +122,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -139,6 +142,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("30", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -158,6 +162,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -177,6 +182,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         #endregion
@@ -199,6 +205,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("4", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -217,6 +224,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("30", harvester.PatchVersion);
             Assert.AreEqual("15", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -235,6 +243,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("4", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -253,6 +262,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("8", harvester.RevisionVersion);
             Assert.AreEqual(String.Empty, harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
         #endregion
 
@@ -275,6 +285,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -294,6 +305,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("30", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -313,6 +325,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -332,6 +345,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("0", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         #endregion
@@ -354,6 +368,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("4", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -372,6 +387,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("30", harvester.PatchVersion);
             Assert.AreEqual("15", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -390,6 +406,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("3", harvester.PatchVersion);
             Assert.AreEqual("4", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         /// <summary>
@@ -408,6 +425,7 @@ namespace SemVerHarvester.Test
             Assert.AreEqual("0", harvester.PatchVersion);
             Assert.AreEqual("8", harvester.RevisionVersion);
             Assert.AreEqual(" (Modified)", harvester.ModifiedString);
+            Assert.AreEqual("1a2b3c4", harvester.CommitId);
         }
 
         #endregion
