@@ -8,8 +8,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("SemVerParser.Test")]
-[assembly: AssemblyDescription("The testing library for SemVerParser.")]
+[assembly: AssemblyTitle("SemVerHarvester")]
+[assembly: AssemblyDescription("SemVerHarvester is a MSBuild task library that harvests version numbers from tags in source control repositories.")]
 
 [assembly: ComVisible(false)]
-[assembly: Guid("1946f22f-26f6-4aa1-b99d-0d4300898373")]
+[assembly: Guid("62c70fbc-ce59-457f-88d3-aea26baf0ac1")]

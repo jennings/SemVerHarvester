@@ -1,10 +1,10 @@
 ﻿//------------------------------------------------------------------------------------
-// <copyright file="SemVerGitParserTests.cs" company="Stephen Jennings">
+// <copyright file="SemVerGitHarvesterTests.cs" company="Stephen Jennings">
 //   Copyright 2011 Stephen Jennings. Licensed under the Apache License, Version 2.0.
 // </copyright>
 //------------------------------------------------------------------------------------
 
-namespace SemVerParser.Test
+namespace SemVerHarvester.Test
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace SemVerParser.Test
     /// <summary>
     ///     Tests the SemVerGetParser class.
     /// </summary>
-    public class SemVerGitParserTests
+    public class SemVerGitHarvesterTests
     {
         private const string GitPath = @"C:\Program Files\Git\bin\git.exe";
 
@@ -31,9 +31,9 @@ namespace SemVerParser.Test
         {
             var runner = this.CreateMockDescribeRunner("v1.2.3-4-g1a2b3c4d");
 
-            var parser = new SemVerGitParser(runner);
-            parser.BuildEngine = this.CreateMockBuildEngine();
-            var returnValue = parser.Execute();
+            var harvester = new SemVerGitHarvester(runner);
+            harvester.BuildEngine = this.CreateMockBuildEngine();
+            var returnValue = harvester.Execute();
 
             Assert.AreEqual(false, returnValue);
         }
@@ -49,10 +49,10 @@ namespace SemVerParser.Test
             mockRunner.Setup(r => r.Run(It.IsAny<string>())).Throws<Exception>();
             var runner = mockRunner.Object;
 
-            var parser = new SemVerGitParser(runner);
-            parser.BuildEngine = this.CreateMockBuildEngine();
-            parser.GitPath = SemVerGitParserTests.GitPath;
-            var returnValue = parser.Execute();
+            var harvester = new SemVerGitHarvester(runner);
+            harvester.BuildEngine = this.CreateMockBuildEngine();
+            harvester.GitPath = SemVerGitHarvesterTests.GitPath;
+            var returnValue = harvester.Execute();
 
             Assert.AreEqual(false, returnValue);
         }
@@ -69,15 +69,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_to_0_0_0_0_when_no_tag_is_found_and_clean_checkout()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("0", parser.MajorVersion);
-            Assert.AreEqual("0", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("0", harvester.MajorVersion);
+            Assert.AreEqual("0", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -88,15 +88,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_to_0_0_0_0_when_no_tag_is_found_and_dirty_checkout()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("0", parser.MajorVersion);
-            Assert.AreEqual("0", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("0", harvester.MajorVersion);
+            Assert.AreEqual("0", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         #endregion
@@ -111,15 +111,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_tag_checkout_1()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v1.2.3-0-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v1.2.3-0-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -130,15 +130,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_tag_checkout_2()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v10.20.30-0-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v10.20.30-0-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("10", parser.MajorVersion);
-            Assert.AreEqual("20", parser.MinorVersion);
-            Assert.AreEqual("30", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("10", harvester.MajorVersion);
+            Assert.AreEqual("20", harvester.MinorVersion);
+            Assert.AreEqual("30", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -149,15 +149,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_tag_checkout_3()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v01.02.03-0-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v01.02.03-0-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -168,15 +168,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_tag_checkout_4()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v2.1.0-0-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v2.1.0-0-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("2", parser.MajorVersion);
-            Assert.AreEqual("1", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("2", harvester.MajorVersion);
+            Assert.AreEqual("1", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         #endregion
@@ -190,15 +190,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_nontagged_checkout_1()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v1.2.3-4-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v1.2.3-4-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("4", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("4", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -208,15 +208,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_nontagged_checkout_2()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v10.20.30-15-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v10.20.30-15-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("10", parser.MajorVersion);
-            Assert.AreEqual("20", parser.MinorVersion);
-            Assert.AreEqual("30", parser.PatchVersion);
-            Assert.AreEqual("15", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("10", harvester.MajorVersion);
+            Assert.AreEqual("20", harvester.MinorVersion);
+            Assert.AreEqual("30", harvester.PatchVersion);
+            Assert.AreEqual("15", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -226,15 +226,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_nontagged_checkout_3()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v01.02.03-4-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v01.02.03-4-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("4", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("4", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
 
         /// <summary>
@@ -244,15 +244,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_clean_nontagged_checkout_4()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v2.1.0-8-g1a2b3c4", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v2.1.0-8-g1a2b3c4", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("2", parser.MajorVersion);
-            Assert.AreEqual("1", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("8", parser.RevisionVersion);
-            Assert.AreEqual(String.Empty, parser.ModifiedString);
+            Assert.AreEqual("2", harvester.MajorVersion);
+            Assert.AreEqual("1", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("8", harvester.RevisionVersion);
+            Assert.AreEqual(String.Empty, harvester.ModifiedString);
         }
         #endregion
 
@@ -266,15 +266,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_tag_checkout_1()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v1.2.3-0-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v1.2.3-0-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -285,15 +285,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_tag_checkout_2()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v10.20.30-0-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v10.20.30-0-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("10", parser.MajorVersion);
-            Assert.AreEqual("20", parser.MinorVersion);
-            Assert.AreEqual("30", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("10", harvester.MajorVersion);
+            Assert.AreEqual("20", harvester.MinorVersion);
+            Assert.AreEqual("30", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -304,15 +304,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_tag_checkout_3()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v01.02.03-0-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v01.02.03-0-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -323,15 +323,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_tag_checkout_4()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v2.1.0-0-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v2.1.0-0-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("2", parser.MajorVersion);
-            Assert.AreEqual("1", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("0", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("2", harvester.MajorVersion);
+            Assert.AreEqual("1", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("0", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         #endregion
@@ -345,15 +345,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_nontagged_checkout_1()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v1.2.3-4-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v1.2.3-4-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("4", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("4", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -363,15 +363,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_nontagged_checkout_2()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v10.20.30-15-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v10.20.30-15-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("10", parser.MajorVersion);
-            Assert.AreEqual("20", parser.MinorVersion);
-            Assert.AreEqual("30", parser.PatchVersion);
-            Assert.AreEqual("15", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("10", harvester.MajorVersion);
+            Assert.AreEqual("20", harvester.MinorVersion);
+            Assert.AreEqual("30", harvester.PatchVersion);
+            Assert.AreEqual("15", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -381,15 +381,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_nontagged_checkout_3()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v01.02.03-4-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v01.02.03-4-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("1", parser.MajorVersion);
-            Assert.AreEqual("2", parser.MinorVersion);
-            Assert.AreEqual("3", parser.PatchVersion);
-            Assert.AreEqual("4", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("1", harvester.MajorVersion);
+            Assert.AreEqual("2", harvester.MinorVersion);
+            Assert.AreEqual("3", harvester.PatchVersion);
+            Assert.AreEqual("4", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         /// <summary>
@@ -399,15 +399,15 @@ namespace SemVerParser.Test
         [Test]
         public void Execute_sets_version_on_dirty_nontagged_checkout_4()
         {
-            SemVerGitParser parser;
-            var returnValue = this.StandardExecute("v2.1.0-8-g1a2b3c4-modified", out parser);
+            SemVerGitHarvester harvester;
+            var returnValue = this.StandardExecute("v2.1.0-8-g1a2b3c4-modified", out harvester);
 
             Assert.AreEqual(true, returnValue);
-            Assert.AreEqual("2", parser.MajorVersion);
-            Assert.AreEqual("1", parser.MinorVersion);
-            Assert.AreEqual("0", parser.PatchVersion);
-            Assert.AreEqual("8", parser.RevisionVersion);
-            Assert.AreEqual(" (Modified)", parser.ModifiedString);
+            Assert.AreEqual("2", harvester.MajorVersion);
+            Assert.AreEqual("1", harvester.MinorVersion);
+            Assert.AreEqual("0", harvester.PatchVersion);
+            Assert.AreEqual("8", harvester.RevisionVersion);
+            Assert.AreEqual(" (Modified)", harvester.ModifiedString);
         }
 
         #endregion
@@ -427,14 +427,14 @@ namespace SemVerParser.Test
             return mockEngine.Object;
         }
 
-        private bool StandardExecute(string gitDescribeReturnValue, out SemVerGitParser parser)
+        private bool StandardExecute(string gitDescribeReturnValue, out SemVerGitHarvester harvester)
         {
             var runner = this.CreateMockDescribeRunner(gitDescribeReturnValue);
 
-            parser = new SemVerGitParser(runner);
-            parser.BuildEngine = this.CreateMockBuildEngine();
-            parser.GitPath = SemVerGitParserTests.GitPath;
-            return parser.Execute();
+            harvester = new SemVerGitHarvester(runner);
+            harvester.BuildEngine = this.CreateMockBuildEngine();
+            harvester.GitPath = SemVerGitHarvesterTests.GitPath;
+            return harvester.Execute();
         }
 
         #endregion

@@ -1,7 +1,7 @@
-SemVerParser
+SemVerHarvester
 ====================
 
-SemVerParser is a MSBuild task library that harvests version numbers from
+SemVerHarvester is a MSBuild task library that harvests version numbers from
 tags in source control repositories.
 
 
@@ -10,23 +10,23 @@ tags in source control repositories.
 Add the package from NuGet by running the following command in the Package
 Manager Console:
 
-    Install-Package SemVerParser
+    Install-Package SemVerHarvester
 
 Next, add the build target to your project file:
 
-    <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerParser.0.1\msbuild\SemVerParser.Targets" />
+    <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.1\msbuild\SemVerHarvester.Targets" />
 
 
 Then, add the following to your BeforeBuild target in your project file:
 
     <Target Name="BeforeBuild">
-        <SemVerGitParser GitPath="C:\Program Files\Git\bin\git.exe">
+        <SemVerGitHarvester GitPath="C:\Program Files\Git\bin\git.exe">
             <Output TaskParameter="MajorVersion" PropertyName="MajorVersion" />
             <Output TaskParameter="MinorVersion" PropertyName="MinorVersion" />
             <Output TaskParameter="PatchVersion" PropertyName="PatchVersion" />
             <Output TaskParameter="RevisionVersion" PropertyName="RevisionVersion" />
             <Output TaskParameter="ModifiedString" PropertyName="ModifiedString" />
-        </SemVerGitParser>
+        </SemVerGitHarvester>
     </Target>
 
 
@@ -55,9 +55,9 @@ The output of git-describe will be transformed as follows:
 
 ## Source Code
 
-SemVerParser is on GitHub:
+SemVerHarvester is on GitHub:
 
-    http://github.com/jennings/SemVerParser
+    http://github.com/jennings/SemVerHarvester
 
 
 ## License

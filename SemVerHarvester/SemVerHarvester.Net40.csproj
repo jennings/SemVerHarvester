@@ -8,8 +8,8 @@
     <ProjectGuid>{AE222838-13A6-46A8-A411-3F848617432C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SemVerParser</RootNamespace>
-    <AssemblyName>SemVerParser.Net40</AssemblyName>
+    <RootNamespace>SemVerHarvester</RootNamespace>
+    <AssemblyName>SemVerHarvester.Net40</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -61,7 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Properties\VersionAssemblyInfo.cs" />
-    <Compile Include="SemVerGitParser.cs" />
+    <Compile Include="SemVerGitHarvester.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -86,7 +86,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SemVerParser.Targets">
+    <None Include="SemVerHarvester.Targets">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

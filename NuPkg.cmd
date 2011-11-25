@@ -3,4 +3,4 @@ setlocal
 
 call "%~dp0Build.cmd" Release
 
-NuGet.exe pack .\SemVerParser.nuspec
+NuGet.exe pack .\SemVerHarvester.nuspec

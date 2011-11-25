@@ -4,7 +4,7 @@
 // </copyright>
 //------------------------------------------------------------------------------------
 
-namespace SemVerParser
+namespace SemVerHarvester
 {
     using System;
     using System.Collections.Generic;

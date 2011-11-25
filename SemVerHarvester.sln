@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser.Net40", "SemVerParser\SemVerParser.Net40.csproj", "{AE222838-13A6-46A8-A411-3F848617432C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerHarvester.Net40", "SemVerHarvester\SemVerHarvester.Net40.csproj", "{AE222838-13A6-46A8-A411-3F848617432C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser.Test", "SemVerParser.Test\SemVerParser.Test.csproj", "{F364D759-CFCC-47EA-8418-1F7521A6111C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerHarvester.Test", "SemVerHarvester.Test\SemVerHarvester.Test.csproj", "{F364D759-CFCC-47EA-8418-1F7521A6111C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B28A3A56-DBF1-43E3-BCE6-EBB236CE3811}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerParser.Net20", "SemVerParser\SemVerParser.Net20.csproj", "{9345CE5F-FEE3-4195-88DB-2DCA21428986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVerHarvester.Net20", "SemVerHarvester\SemVerHarvester.Net20.csproj", "{9345CE5F-FEE3-4195-88DB-2DCA21428986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

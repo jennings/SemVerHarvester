@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>SemVerParser</id>
+    <id>SemVerHarvester</id>
     <version>0.1</version>
     <authors>Stephen Jennings</authors>
     <owners>Stephen Jennings</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://github.com/jennings/SemVerParser</projectUrl>
+    <projectUrl>http://github.com/jennings/SemVerHarvester</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A MSBuild task library for harvesting semantic versioning information from source control tags.</description>
     <releaseNotes>Initial release.</releaseNotes>
@@ -14,8 +14,8 @@
     <tags>MSBuild Version Git</tags>
   </metadata>
   <files>
-    <file src="SemVerParser\bin\Release\SemVerParser.Net40.dll" target="msbuild" />
-    <file src="SemVerParser\bin\Release\SemVerParser.Net20.dll" target="msbuild" />
-    <file src="SemVerParser\SemVerParser.Targets" target="msbuild" />
+    <file src="SemVerHarvester\bin\Release\SemVerHarvester.Net40.dll" target="msbuild" />
+    <file src="SemVerHarvester\bin\Release\SemVerHarvester.Net20.dll" target="msbuild" />
+    <file src="SemVerHarvester\SemVerHarvester.Targets" target="msbuild" />
   </files>
 </package>

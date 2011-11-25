@@ -1,10 +1,10 @@
 ﻿//------------------------------------------------------------------------------------
-// <copyright file="SemVerGitParser.cs" company="Stephen Jennings">
+// <copyright file="SemVerGitHarvester.cs" company="Stephen Jennings">
 //   Copyright 2011 Stephen Jennings. Licensed under the Apache License, Version 2.0.
 // </copyright>
 //------------------------------------------------------------------------------------
 
-namespace SemVerParser
+namespace SemVerHarvester
 {
     using System;
     using System.Collections.Generic;
@@ -16,25 +16,25 @@ namespace SemVerParser
     /// <summary>
     ///     Parses the output of git-describe into semantic versioning components.
     /// </summary>
-    public class SemVerGitParser : Task
+    public class SemVerGitHarvester : Task
     {
         private GitDescribeRunner gitDescribeRunner;
         private bool dirty;
 
         /// <summary>
-        ///     Initializes a new instance of the SemVerGitParser class.
+        ///     Initializes a new instance of the SemVerGitHarvester class.
         /// </summary>
-        public SemVerGitParser()
+        public SemVerGitHarvester()
             : this(new GitDescribeRunner())
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the SemVerGitParser class with the given
+        ///     Initializes a new instance of the SemVerGitHarvester class with the given
         ///     GitDescribeRunner, used for unit testing.
         /// </summary>
         /// <param name="gitDescribeRunner">The GitDescribeRunner to use.</param>
-        public SemVerGitParser(GitDescribeRunner gitDescribeRunner)
+        public SemVerGitHarvester(GitDescribeRunner gitDescribeRunner)
         {
             this.gitDescribeRunner = gitDescribeRunner;
         }
@@ -90,7 +90,7 @@ namespace SemVerParser
         {
             if (this.GitPath == null)
             {
-                this.Log.LogError("GitPath must be set to use SemVerGitParser.");
+                this.Log.LogError("GitPath must be set to use SemVerGitHarvester.");
                 return false;
             }
 
