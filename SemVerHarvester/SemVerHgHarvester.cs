@@ -76,6 +76,28 @@ namespace SemVerHarvester
 
         private void SetPropertiesFromHgDescribe()
         {
+            var tagRx = new Regex(@"^v([0-9]+)\.([0-9]+)\.([0-9]+)$");
+            if (tagRx.IsMatch(this.mercurialLogRunner.LatestTag))
+            {
+                var match = tagRx.Match(this.mercurialLogRunner.LatestTag);
+                this.MajorVersion = Convert.ToInt32(match.Groups[1].Value).ToString();
+                this.MinorVersion = Convert.ToInt32(match.Groups[2].Value).ToString();
+                this.PatchVersion = Convert.ToInt32(match.Groups[3].Value).ToString();
+
+                // Reduce revision number by 1 to account for tags in Mercurial
+                // creating a new changeset.
+                this.RevisionVersion = (Convert.ToInt32(this.mercurialLogRunner.LatestTagDistance) - 1).ToString();
+            }
+            else
+            {
+                this.MajorVersion = "0";
+                this.MinorVersion = "0";
+                this.PatchVersion = "0";
+                this.RevisionVersion = "0";
+            }
+
+            this.CommitId = this.mercurialLogRunner.Node;
+            this.Modified = this.mercurialLogRunner.Dirty;
         }
     }
 }

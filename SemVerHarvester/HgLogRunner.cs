@@ -19,22 +19,22 @@ namespace SemVerHarvester
         /// <summary>
         ///     Gets the latest tag from the Mercurial database.
         /// </summary>
-        public string LatestTag { get; private set; }
+        public virtual string LatestTag { get; private set; }
 
         /// <summary>
         ///     Gets the number of commits since the latest tag in the Mercurial database.
         /// </summary>
-        public string LatestTagDistance { get; private set; }
+        public virtual string LatestTagDistance { get; private set; }
 
         /// <summary>
         ///     Gets the commit ID of the current commit.
         /// </summary>
-        public string Node { get; private set; }
+        public virtual string Node { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether the working directory is dirty.
         /// </summary>
-        public bool Dirty { get; private set; }
+        public virtual bool Dirty { get; private set; }
 
         /// <summary>
         ///     Runs hg-log.
@@ -42,16 +42,16 @@ namespace SemVerHarvester
         /// <param name="mercurialPath">The path to the hg executable.</param>
         public virtual void Run(string mercurialPath)
         {
-            var latestTag = this.ResultFromMercurial(mercurialPath, "log -r . --template '{latesttag}'");
+            var latestTag = this.ResultFromMercurial(mercurialPath, @"log -r . --template ""{latesttag}""");
             this.LatestTag = latestTag;
 
-            var latestTagDistance = this.ResultFromMercurial(mercurialPath, "log -r . --template '{latesttagdistance}'");
+            var latestTagDistance = this.ResultFromMercurial(mercurialPath, @"log -r . --template ""{latesttagdistance}""");
             this.LatestTagDistance = latestTagDistance;
 
-            var node = this.ResultFromMercurial(mercurialPath, "log -r . --template '{node|short}'");
+            var node = this.ResultFromMercurial(mercurialPath, @"log -r . --template ""{node|short}""");
             this.Node = node;
 
-            var changedFiles = this.ResultFromMercurial(mercurialPath, "status --added --modified --removed --deleted --subrepos");
+            var changedFiles = this.ResultFromMercurial(mercurialPath, @"status --added --modified --removed --deleted --subrepos");
             this.Dirty = !String.IsNullOrEmpty(changedFiles);
         }
 

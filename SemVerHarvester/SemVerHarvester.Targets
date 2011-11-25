@@ -2,4 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <UsingTask AssemblyFile="SemVerHarvester.Net40.dll" TaskName="SemVerHarvester.SemVerGitHarvester" Condition=" $(TargetFrameworkVersion) == 'v4.0' " />
   <UsingTask AssemblyFile="SemVerHarvester.Net20.dll" TaskName="SemVerHarvester.SemVerGitHarvester" Condition=" $(TargetFrameworkVersion) != 'v4.0' " />
+  <UsingTask AssemblyFile="SemVerHarvester.Net40.dll" TaskName="SemVerHarvester.SemVerHgHarvester" Condition=" $(TargetFrameworkVersion) == 'v4.0' " />
+  <UsingTask AssemblyFile="SemVerHarvester.Net20.dll" TaskName="SemVerHarvester.SemVerHgHarvester" Condition=" $(TargetFrameworkVersion) != 'v4.0' " />
 </Project>
