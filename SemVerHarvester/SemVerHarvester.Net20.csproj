@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Harvester.cs" />
+    <Compile Include="HgLogRunner.cs" />
+    <Compile Include="SemVerHgHarvester.cs" />
     <Compile Include="GitDescribeRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\CommonAssemblyInfo.cs" />
@@ -61,10 +64,6 @@
       <Output TaskParameter="RevisionVersion" PropertyName="RevisionVersion" />
       <Output TaskParameter="ModifiedString" PropertyName="ModifiedString" />
     </SemVerGitHarvester>
-    <AssemblyInfo OutputFile="Properties\VersionAssemblyInfo.cs"
-                  CodeLanguage="CS"
-                  AssemblyVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)"
-                  AssemblyFileVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)"
-                  AssemblyInformationalVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)$(ModifiedString)" />
+    <AssemblyInfo OutputFile="Properties\VersionAssemblyInfo.cs" CodeLanguage="CS" AssemblyVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)" AssemblyFileVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)" AssemblyInformationalVersion="$(MajorVersion).$(MinorVersion).$(PatchVersion).$(RevisionVersion)$(ModifiedString)" />
   </Target>
 </Project>
