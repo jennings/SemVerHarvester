@@ -25,9 +25,10 @@ namespace SemVerHarvester.Test
 
         /// <summary>
         ///     Confirms that Execute fails if GitPath is not set.
+        ///     Test fails if git.exe is not in path
         /// </summary>
         [Test]
-        public void Execute_returns_false_if_git_path_is_not_set()
+        public void Auto_detect_git_path()
         {
             var runner = this.CreateMockDescribeRunner("v1.2.3-4-g1a2b3c4d");
 
@@ -35,7 +36,7 @@ namespace SemVerHarvester.Test
             harvester.BuildEngine = this.CreateMockBuildEngine();
             var returnValue = harvester.Execute();
 
-            Assert.AreEqual(false, returnValue);
+            Assert.AreEqual(true, returnValue);
         }
 
         /// <summary>
