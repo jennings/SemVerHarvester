@@ -9,6 +9,7 @@ namespace SemVerHarvester
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text.RegularExpressions;
     using Microsoft.Build.Framework;
@@ -55,8 +56,10 @@ namespace SemVerHarvester
                 {
                     this.gitPath = this.FindGitExe();
                 }
+
                 return this.gitPath;
             }
+
             set 
             { 
                 this.gitPath = value; 
@@ -153,6 +156,7 @@ namespace SemVerHarvester
                 this.CommitId = String.Empty;
             }
         }
+
         private string Exec(string wd, string command, string args)
         {
             Process p = new Process();
@@ -165,10 +169,14 @@ namespace SemVerHarvester
             p.StartInfo.WorkingDirectory = wd;
             p.StartInfo.CreateNoWindow = true;
             p.Start();
+
             string output = p.StandardOutput.ReadToEnd();
+            
             p.WaitForExit();
             return output;
         }
+
+        [SuppressMessage("Microsoft.StyleCop.CSharp.SpacingRules", "SA1001:CommasMustBeSpacedCorrectly", Justification = "Formatting works better with #ifdef")]
         private string FindGitExe()
         {
             var checkDirs = new List<string>();
@@ -180,15 +188,18 @@ namespace SemVerHarvester
                 ,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"git\bin")
 #endif
             });
+
             foreach (var dir in checkDirs)
             {
                 var checkPath = Path.Combine(dir, "git.exe");
                 Log.LogMessage(MessageImportance.Low, "Searching for git.exe, probing location: '{0}'", checkPath);
+                
                 if (File.Exists(checkPath))
                 {
                     return checkPath;
                 }
             }
+
             Log.LogError("Could not find git.exe, please specify GitPath explicity, or ensure git.exe is in the PATH");
             throw new Exception("Could not find git.exe, make sure it's in path");
         }
