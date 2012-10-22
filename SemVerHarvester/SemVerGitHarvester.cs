@@ -8,7 +8,8 @@ namespace SemVerHarvester
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Diagnostics;
+    using System.IO;
     using System.Text.RegularExpressions;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
@@ -19,6 +20,7 @@ namespace SemVerHarvester
     public class SemVerGitHarvester : Harvester
     {
         private GitDescribeRunner gitDescribeRunner;
+        private string gitPath;
 
         /// <summary>
         ///     Initializes a new instance of the SemVerGitHarvester class.
@@ -41,8 +43,25 @@ namespace SemVerHarvester
         /// <summary>
         ///     Gets or sets the path to the Git executable.
         /// </summary>
-        [Required]
-        public string GitPath { get; set; }
+        public string GitPath 
+        { 
+            get 
+            {
+#if NET40
+                if (string.IsNullOrWhiteSpace(this.gitPath))
+#else
+                if (string.IsNullOrEmpty(this.gitPath))
+#endif
+                {
+                    this.gitPath = this.FindGitExe();
+                }
+                return this.gitPath;
+            }
+            set 
+            { 
+                this.gitPath = value; 
+            }
+        }
 
         /// <summary>
         ///     Executes the task.
@@ -133,6 +152,45 @@ namespace SemVerHarvester
                 this.Modified = true;
                 this.CommitId = String.Empty;
             }
+        }
+        private string Exec(string wd, string command, string args)
+        {
+            Process p = new Process();
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.FileName = command;
+            p.StartInfo.Arguments = args;
+            p.StartInfo.WorkingDirectory = wd;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+            return output;
+        }
+        private string FindGitExe()
+        {
+            var checkDirs = new List<string>();
+            checkDirs.AddRange(Environment.GetEnvironmentVariable("PATH").Split(';'));
+            checkDirs.AddRange(new[] 
+            {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"git\bin")
+#if NET40
+                ,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"git\bin")
+#endif
+            });
+            foreach (var dir in checkDirs)
+            {
+                var checkPath = Path.Combine(dir, "git.exe");
+                Log.LogMessage(MessageImportance.Low, "Searching for git.exe, probing location: '{0}'", checkPath);
+                if (File.Exists(checkPath))
+                {
+                    return checkPath;
+                }
+            }
+            Log.LogError("Could not find git.exe, please specify GitPath explicity, or ensure git.exe is in the PATH");
+            throw new Exception("Could not find git.exe, make sure it's in path");
         }
     }
 }
