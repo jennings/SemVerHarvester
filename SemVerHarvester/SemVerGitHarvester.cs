@@ -48,11 +48,7 @@ namespace SemVerHarvester
         { 
             get 
             {
-#if NET40
-                if (string.IsNullOrWhiteSpace(this.gitPath))
-#else
-                if (string.IsNullOrEmpty(this.gitPath))
-#endif
+                if (this.StringIsNullOrWhitespace(this.gitPath))
                 {
                     this.gitPath = this.FindGitExe();
                 }
@@ -72,7 +68,7 @@ namespace SemVerHarvester
         /// <returns>True on success.</returns>
         public override bool Execute()
         {
-            if (this.GitPath == null)
+            if (this.StringIsNullOrWhitespace(this.GitPath))
             {
                 this.Log.LogError("GitPath must be set to use SemVerGitHarvester.");
                 return false;
@@ -176,18 +172,15 @@ namespace SemVerHarvester
             return output;
         }
 
-        [SuppressMessage("Microsoft.StyleCop.CSharp.SpacingRules", "SA1001:CommasMustBeSpacedCorrectly", Justification = "Formatting works better with #ifdef")]
         private string FindGitExe()
         {
             var checkDirs = new List<string>();
             checkDirs.AddRange(Environment.GetEnvironmentVariable("PATH").Split(';'));
-            checkDirs.AddRange(new[] 
+
+            foreach (var x in this.GetProgramFilesFolders())
             {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"git\bin")
-#if NET40
-                ,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"git\bin")
-#endif
-            });
+                checkDirs.Add(Path.Combine(x, @"git\bin"));
+            }
 
             foreach (var dir in checkDirs)
             {
@@ -202,6 +195,36 @@ namespace SemVerHarvester
 
             Log.LogError("Could not find git.exe, please specify GitPath explicity, or ensure git.exe is in the PATH");
             throw new Exception("Could not find git.exe, make sure it's in path");
+        }
+
+        private bool StringIsNullOrWhitespace(string test)
+        {
+            if (string.IsNullOrEmpty(test))
+            {
+                return true;
+            }
+
+            if (test.Trim().Length == 0)
+            {
+                return true;
+            }
+            
+            return false;
+        }
+
+        private IEnumerable<string> GetProgramFilesFolders()
+        {
+            var pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            yield return pf;
+
+            if (pf.Contains("(x86)"))
+            {
+                yield return pf.Replace(" (x86)", string.Empty);
+            }
+            else
+            {
+                yield return pf + " (x86)";
+            }
         }
     }
 }
