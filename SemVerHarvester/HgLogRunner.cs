@@ -62,7 +62,8 @@ namespace SemVerHarvester
                 FileName = mercurialPath,
                 Arguments = arguments,
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
             };
 
             var process = Process.Start(psi);
