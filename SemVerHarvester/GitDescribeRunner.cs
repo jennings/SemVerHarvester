@@ -28,7 +28,8 @@ namespace SemVerHarvester
                 FileName = gitPath,
                 Arguments = @"describe --always --long --dirty=-modified --match v[0-9]* --abbrev=7",
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
             };
 
             var process = Process.Start(psi);
