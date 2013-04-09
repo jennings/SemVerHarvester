@@ -2,8 +2,13 @@ SemVerHarvester
 ====================
 
 SemVerHarvester is a MSBuild task library that harvests version numbers from
-tags in source control repositories.
+tags in source control repositories.  
 
+SemVerHarvester expects version tags in the format "v1.1.1" It parces the numeric 
+triple (1.1.1) into major version, minor version, and patch version.  The number of 
+commits between the last version tag and HEAD for the current branch is returned in
+revision version, and if untracked changes are found, a modified property is set to
+ " (Modified)".
 
 ## Instructions
 
@@ -14,7 +19,7 @@ Manager Console:
 
 Next, add the build target to your project file:
 
-    <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.1\msbuild\SemVerHarvester.Targets" />
+    <Import Project="$(MSBuildProjectDirectory)\..\packages\SemVerHarvester.0.3.0\msbuild\SemVerHarvester.Targets" />
 
 
 Then, add the following to your BeforeBuild target in your project file:
@@ -29,7 +34,6 @@ Then, add the following to your BeforeBuild target in your project file:
         </SemVerGitHarvester>
     </Target>
 
-
 You will then have $(MajorVersion), $(MinorVersion), etc., available to use in your
 project file. If you're using MSBuildCommunityTasks, you can use the AssemblyFile
 task to generate assembly information:
@@ -43,14 +47,14 @@ task to generate assembly information:
 
 The output of git-describe will be transformed as follows:
 
-    git-describe                     Major  Minor  Patch  Revision  ModifiedString
-    --------------------------       ------ ------ ------ --------- ---------------
-    v1.2.3-0-g1ab2cd3           ==>  "1"    "2"    "3"    "0"       ""
-    v1.2.3-4-g1ab2cd3           ==>  "1"    "2"    "3"    "4"       ""
-    v1.2.3-0-g1ab2cd3-modified  ==>  "1"    "2"    "3"    "0"       " (Modified)"
-    v1.2.3-4-g1ab2cd3-modified  ==>  "1"    "2"    "3"    "4"       " (Modified)"
-    1ab2cd3                     ==>  "0"    "0"    "0"    "0"       ""
-    1ab2cd3-modified            ==>  "0"    "0"    "0"    "0"       " (Modified)"
+    git-describe                     Major  Minor  Patch  Revision  ModifiedString    Explanation
+    --------------------------       ------ ------ ------ --------- ---------------   -----------------------------
+    v1.2.3-0-g1ab2cd3           ==>  "1"    "2"    "3"    "0"       ""                tag="v1.2.3" found, no commits after tag
+    v1.2.3-4-g1ab2cd3           ==>  "1"    "2"    "3"    "4"       ""                tag="v1.2.3" found, 4 commits after tag
+    v1.2.3-0-g1ab2cd3-modified  ==>  "1"    "2"    "3"    "0"       " (Modified)"     tag="v1.2.3" found, no commits after tag, untracked changes found
+    v1.2.3-4-g1ab2cd3-modified  ==>  "1"    "2"    "3"    "4"       " (Modified)"     tag="v1.2.3" found, 4 commits after tag, untracked changes found
+    1ab2cd3                     ==>  "0"    "0"    "0"    "0"       ""                no semVer tag found
+    1ab2cd3-modified            ==>  "0"    "0"    "0"    "0"       " (Modified)"     no semVer tag found, untracked changes found
 
 
 ## Source Code
