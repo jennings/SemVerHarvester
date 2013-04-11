@@ -8,7 +8,9 @@ namespace SemVerHarvester
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Text.RegularExpressions;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
@@ -19,6 +21,7 @@ namespace SemVerHarvester
     public class SemVerGitHarvester : Harvester
     {
         private GitDescribeRunner gitDescribeRunner;
+        private string gitPath;
 
         /// <summary>
         ///     Initializes a new instance of the SemVerGitHarvester class.
@@ -41,8 +44,23 @@ namespace SemVerHarvester
         /// <summary>
         ///     Gets or sets the path to the Git executable.
         /// </summary>
-        [Required]
-        public string GitPath { get; set; }
+        public string GitPath 
+        { 
+            get 
+            {
+                if (this.StringIsNullOrWhitespace(this.gitPath))
+                {
+                    this.gitPath = this.FindGitExe();
+                }
+
+                return this.gitPath;
+            }
+
+            set 
+            { 
+                this.gitPath = value; 
+            }
+        }
 
         /// <summary>
         ///     Executes the task.
@@ -50,7 +68,7 @@ namespace SemVerHarvester
         /// <returns>True on success.</returns>
         public override bool Execute()
         {
-            if (this.GitPath == null)
+            if (this.StringIsNullOrWhitespace(this.GitPath))
             {
                 this.Log.LogError("GitPath must be set to use SemVerGitHarvester.");
                 return false;
@@ -132,6 +150,80 @@ namespace SemVerHarvester
                 this.RevisionVersion = "1";
                 this.Modified = true;
                 this.CommitId = String.Empty;
+            }
+        }
+
+        private string Exec(string wd, string command, string args)
+        {
+            Process p = new Process();
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.FileName = command;
+            p.StartInfo.Arguments = args;
+            p.StartInfo.WorkingDirectory = wd;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+
+            string output = p.StandardOutput.ReadToEnd();
+            
+            p.WaitForExit();
+            return output;
+        }
+
+        private string FindGitExe()
+        {
+            var checkDirs = new List<string>();
+            checkDirs.AddRange(Environment.GetEnvironmentVariable("PATH").Split(';'));
+
+            foreach (var x in this.GetProgramFilesFolders())
+            {
+                checkDirs.Add(Path.Combine(x, @"git\bin"));
+            }
+
+            foreach (var dir in checkDirs)
+            {
+                var checkPath = Path.Combine(dir, "git.exe");
+                Log.LogMessage(MessageImportance.Low, "Searching for git.exe, probing location: '{0}'", checkPath);
+                
+                if (File.Exists(checkPath))
+                {
+                    return checkPath;
+                }
+            }
+
+            Log.LogError("Could not find git.exe, please specify GitPath explicity, or ensure git.exe is in the PATH");
+            throw new Exception("Could not find git.exe, make sure it's in path");
+        }
+
+        private bool StringIsNullOrWhitespace(string test)
+        {
+            if (string.IsNullOrEmpty(test))
+            {
+                return true;
+            }
+
+            if (test.Trim().Length == 0)
+            {
+                return true;
+            }
+            
+            return false;
+        }
+
+        private IEnumerable<string> GetProgramFilesFolders()
+        {
+            var pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            yield return pf;
+
+            if (pf.Contains("(x86)"))
+            {
+                yield return pf.Replace(" (x86)", string.Empty);
+            }
+            else
+            {
+                yield return pf + " (x86)";
             }
         }
     }
