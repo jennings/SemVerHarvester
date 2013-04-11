@@ -8,12 +8,13 @@ namespace SemVerHarvester.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using Microsoft.Build.Framework;
     using Moq;
     using NUnit.Framework;
-
+    
     /// <summary>
     ///     Tests the SemVerGetParser class.
     /// </summary>
@@ -24,18 +25,25 @@ namespace SemVerHarvester.Test
         #region Error handling tests
 
         /// <summary>
-        ///     Confirms that Execute fails if GitPath is not set.
+        ///     Check that Execute works even if GitPath is not specified or null
         /// </summary>
         [Test]
-        public void Execute_returns_false_if_git_path_is_not_set()
+        public void Auto_detect_git_path()
         {
             var runner = this.CreateMockDescribeRunner("v1.2.3-4-g1a2b3c4d");
-
             var harvester = new SemVerGitHarvester(runner);
             harvester.BuildEngine = this.CreateMockBuildEngine();
-            var returnValue = harvester.Execute();
+            harvester.GitPath = null;
 
-            Assert.AreEqual(false, returnValue);
+            var success = harvester.Execute();
+            if (success)
+            {
+                Assert.True(File.Exists(harvester.GitPath));
+            }
+            else
+            {
+                Assert.True(harvester.GitPath == null);
+            }
         }
 
         /// <summary>
