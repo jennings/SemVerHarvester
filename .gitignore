@@ -11,6 +11,7 @@
 [Bb]in/
 [Oo]bj/
 [Aa]pp_[Dd]ata/
+packages/
 
 *.aps
 *.cache
