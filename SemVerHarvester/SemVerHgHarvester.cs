@@ -84,9 +84,7 @@ namespace SemVerHarvester
                 this.MinorVersion = Convert.ToInt32(match.Groups[2].Value).ToString();
                 this.PatchVersion = Convert.ToInt32(match.Groups[3].Value).ToString();
 
-                // Reduce revision number by 1 to account for tags in Mercurial
-                // creating a new changeset.
-                this.RevisionVersion = (Convert.ToInt32(this.mercurialLogRunner.LatestTagDistance) - 1).ToString();
+                this.RevisionVersion = Convert.ToInt32(this.mercurialLogRunner.LatestTagDistance).ToString();
             }
             else
             {
